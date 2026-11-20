@@ -202,6 +202,7 @@ jobs:
           tag: ${{ steps.tag.outputs.release_tag }}
           release_name: ${{ steps.tag.outputs.release_tag }}
           prerelease: true
+          overwrite: true
           body: ""
 
       - name: Publishing legacy pre-release to GitHub Releases
@@ -214,6 +215,7 @@ jobs:
           tag: ${{ steps.tag.outputs.release_tag }}-legacy
           release_name: ${{ steps.tag.outputs.release_tag }}-legacy (OpenWRT 23.05)
           prerelease: true
+          overwrite: true
           body: "Legacy build for OpenWRT 23.05 — no ucode-mod-digest dependency."
 
       - name: Publishing to GitHub Releases

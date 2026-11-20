@@ -1,6 +1,6 @@
 #!/bin/sh
 # Установщик Re:HomeProxy для OpenWrt (в одном скрипте: APK / opkg / 23.05 legacy)
-# https://github.com/whyred195/homeproxy-hiddify
+# https://github.com/gzewani/homeproxy-hiddify
 #
 # Вручную ставится только LuCI-приложение + ключ подписи, а ядро, ByeDPI и Zapret
 # устанавливаются через собственный бэкенд приложения (core_mgmt.uc + rpcd-объект
@@ -9,9 +9,9 @@
 # проверенной логикой, что и графический интерфейс.
 #
 # Установка (одной строкой — ввод читается из /dev/tty, пайп остаётся интерактивным):
-#   wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | sh
+#   wget -qO- https://raw.githubusercontent.com/gzewani/homeproxy-hiddify/master/install.sh | sh
 # Либо в два шага:
-#   wget -O /tmp/install.sh https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh
+#   wget -O /tmp/install.sh https://raw.githubusercontent.com/gzewani/homeproxy-hiddify/master/install.sh
 #   sh /tmp/install.sh
 #
 # При заблокированном/замедленном GitHub можно указать зеркало:
@@ -71,12 +71,12 @@ info "Версия: OpenWrt $VER  |  Архитектура: $ARCH  |  Мене�
 ok "[1/5] Устанавливаю LuCI-приложение Re:HomeProxy..."
 if [ "$PM" = apk ]; then
 	if [ ! -f /etc/apk/keys/homeproxy-hiddify.pub ]; then
-		dl "https://github.com/whyred195/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub" /tmp/hp.pub \
+		dl "https://github.com/gzewani/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub" /tmp/hp.pub \
 			&& cp /tmp/hp.pub /etc/apk/keys/ && rm -f /tmp/hp.pub && ok "  ключ подписи добавлен в доверенные" \
 			|| warn "  не удалось скачать ключ подписи — поставлю без проверки подписи"
 	fi
 fi
-APPURL=$(api 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' \
+APPURL=$(api 'https://api.github.com/repos/gzewani/homeproxy-hiddify/releases' \
 	| grep -o "https://github\.com/[^\"]*luci-app-re-homeproxy[^\"]*${SUFFIX}\.${EXT}" | head -1)
 [ -n "$APPURL" ] || die "Не нашёл пакет luci-app-re-homeproxy${SUFFIX}.${EXT} (GitHub заблокирован? попробуйте GH_MIRROR=...)."
 dl "$APPURL" /tmp/app.$EXT || die "Не удалось скачать приложение (попробуйте GH_MIRROR=...)."
@@ -106,7 +106,7 @@ if [ -n "$ILANG" ]; then
 	# базовый перевод интерфейса LuCI (из фида, best-effort)
 	if [ "$PM" = apk ]; then apk add luci-i18n-base-$ILANG >/dev/null 2>&1; else opkg install luci-i18n-base-$ILANG >/dev/null 2>&1; fi
 	# перевод самого приложения (из релиза homeproxy)
-	LURL=$(api 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' \
+	LURL=$(api 'https://api.github.com/repos/gzewani/homeproxy-hiddify/releases' \
 		| grep -o "https://github\.com/[^\"]*luci-i18n-homeproxy-${ILANG}[^\"]*\.${EXT}" | head -1)
 	if [ -n "$LURL" ] && dl "$LURL" /tmp/i18n.$EXT; then
 		if [ "$PM" = apk ]; then apk add /tmp/i18n.$EXT 2>/dev/null || apk add --allow-untrusted /tmp/i18n.$EXT; \

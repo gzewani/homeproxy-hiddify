@@ -192,7 +192,7 @@ jobs:
           name: homeproxy-hiddify.pub
           path: .github/homeproxy-hiddify.pub
 
-      - name: Publishing draft pre-release to GitHub Releases
+      - name: Publishing pre-release to GitHub Releases
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         with:
@@ -202,10 +202,9 @@ jobs:
           tag: ${{ steps.tag.outputs.release_tag }}
           release_name: ${{ steps.tag.outputs.release_tag }}
           prerelease: true
-          draft: true
           body: ""
 
-      - name: Publishing legacy draft release to GitHub Releases
+      - name: Publishing legacy pre-release to GitHub Releases
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         with:
@@ -215,7 +214,6 @@ jobs:
           tag: ${{ steps.tag.outputs.release_tag }}-legacy
           release_name: ${{ steps.tag.outputs.release_tag }}-legacy (OpenWRT 23.05)
           prerelease: true
-          draft: true
           body: "Legacy build for OpenWRT 23.05 — no ucode-mod-digest dependency."
 
       - name: Publishing to GitHub Releases
